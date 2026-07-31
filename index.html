@@ -69,6 +69,39 @@
       height: 8px;
       border-radius: 4px;
     }
+    /* ========================================================
+       👇 วางโค้ด CSS สำหรับมือถือ ต่อท้ายตรงนี้ได้เลยครับ 👇
+       ======================================================== */
+    @media (max-width: 768px) {
+      body {
+        padding: 8px !important;
+        font-size: 14px;
+      }
+
+      .card-container, .summary-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .card {
+        width: 100% !important;
+        padding: 12px !important;
+      }
+
+      .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      th, td {
+        padding: 8px 10px !important;
+        font-size: 13px;
+      }
+    }
+    /* ======================================================== */
   </style>
 </head>
 <body>
