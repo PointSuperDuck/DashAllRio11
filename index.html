@@ -102,6 +102,50 @@
       }
     }
     /* ======================================================== */
+ /* ========================================================
+   📱 ปรับแต่งหัวเรื่องและดีไซน์เฉพาะบนมือถือ (Mobile Design)
+   ======================================================== */
+@media (max-width: 768px) {
+
+  /* 1. ย่อขนาดหัวเรื่องทั้งหมดให้พอดีจอมือถือ */
+  h1, .header-title, .title {
+    font-size: 1.25rem !important;  /* ย่อขนาดจากเดิมเหลือประมาณ 20px */
+    line-height: 1.3 !important;    /* ปรับระยะห่างระหว่างบรรทัดไม่ให้ห่างเกินไป */
+    margin-bottom: 8px !important;
+    text-align: center;            /* จัดให้อยู่กลางหน้าจอมือถือ (ดูเป็นระเบียบขึ้น) */
+  }
+
+  h2, .sub-title {
+    font-size: 1.1rem !important;   /* หัวเรื่องย่อย (~17.5px) */
+    margin-bottom: 6px !important;
+  }
+
+  h3 {
+    font-size: 1.0rem !important;   /* หัวเรื่องระดับ 3 (~16px) */
+  }
+
+  /* 2. ลดระยะห่างแถบบนสุด (Header Banner) ไม่ให้กินพื้นที่หน้าจอเยอะ */
+  header, .header-container, .top-bar {
+    padding: 10px 12px !important;  /* ลด Padding บน-ล่าง */
+    margin-bottom: 12px !important;
+    border-radius: 8px;             /* ปรับมุมให้โค้งมนดูทันสมัย */
+  }
+
+  /* 3. ปรับตัวหนังสือคำอธิบายใต้หัวเรื่อง (Sub-text / Date) */
+  .subtitle-text, .update-date, p {
+    font-size: 0.85rem !important;  /* ตัวหนังสือเล็ก (~13.5px) */
+    color: #666;                   /* ใช้สีเทาเพื่อไม่ให้แย่งความสนใจจากหัวเรื่อง */
+  }
+
+  /* 4. ตกแต่งการ์ดสรุปข้อมูลให้ดูละมุนและอ่านง่ายขึ้น */
+  .card, .stat-card {
+    padding: 12px 14px !important;
+    margin-bottom: 10px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important; /* เงาบางๆ ให้ดูมีมิติ */
+  }
+}
+
   </style>
 </head>
 <body>
