@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สรุปขั้นตอนการจัดซื้อจัดจ้าง - ชป.11</title>
+  
+  <style>
+    /* ========================================================
+       🎨 1. สไตล์พื้นฐานและการจัดวาง (Layout Styles)
+       ======================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .page-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+
+    /* สถานะกำลังโหลดข้อมูล */
+    #loadingState {
+      text-align: center;
+      padding: 40px;
+      font-size: 1.1rem;
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    /* ========================================================
+       📊 2. สไตล์ตาราง (Table Styles)
+       ======================================================== */
+    .table-container {
+      width: 100%;
+      overflow-x: auto; /* เปิดระบบเลื่อนแนวนอนบนมือถือ */
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    table.step-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+      white-space: nowrap; /* ป้องกันข้อความในเซลล์ตัดบรรทัด */
+    }
+
+    table.step-table th, 
+    table.step-table td {
+      padding: 8px 12px;
+      border-right: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    /* 📌 ตกแต่งหัวตาราง (TableHeader) */
+    table.step-table thead th {
+      background-color: #1e293b;
+      color: #ffffff;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    table.step-table thead tr:nth-child(2) th {
+      background-color: #334155;
+      font-size: 12px;
+    }
+
+    /* เน้นสีหัวตารางคอลัมน์สำคัญ */
+    .header-total { background-color: #0284c7 !important; }
+    .header-success { background-color: #16a34a !important; }
+
+    /* 📌 คอลัมน์ตรึงแน่นด้านซ้าย (Sticky Column - มือถือเลื่อนแล้วไม่หลง) */
+    .sticky-col-1 {
+      position: sticky;
+      left: 0;
+      z-index: 5;
+      background-color: #ffffff;
+      font-weight: 600;
+      text-align: left !important;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    }
+
+    .sticky-col-2 {
+      position: sticky;
+      left: 140px; /* ความกว้างของคอลัมน์แรก */
+      z-index: 5;
+      background-color: #ffffff;
+      text-align: left !important;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    }
+
+    thead th.sticky-col-1, 
+    thead th.sticky-col-2 {
+      background-color: #1e293b !important;
+      color: #ffffff !important;
+      z-index: 15 !important;
+    }
+
+    /* 📌 สไตล์ไฮไลต์เนื้อหาในตาราง */
+    .bg-total { background-color: #f0f9ff; font-weight: bold; }
+    .bg-success { background-color: #dc2626; color: white; } /* ทำสัญญาแล้ว */
+    .text-muted { color: #cbd5e1; }
+    
+    /* สไตล์แถวรวมทั้งหมด (Grand Total Footer) */
+    table.step-table tfoot tr td {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-weight: 700;
+      border-top: 2px solid #0284c7;
+    }
+
+    /* ========================================================
+       📱 3. Responsive สำหรับหน้าจอมือถือ
+       ======================================================== */
+    @media (max-width: 768px) {
+      body { padding: 8px; }
+      .container { padding: 12px; }
+      .page-title { font-size: 1.1rem; }
+      table.step-table th, table.step-table td { padding: 6px 8px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="page-title">📋 สรุปขั้นตอนการจัดซื้อจัดจ้าง (AE / AS) แยกตามหน่วยงาน</div>
+    <div class="page-subtitle">ข้อมูลจำแนกตามขั้นตอนการดำเนินงาน และวงเงินงบประมาณปีปัจจุบัน (หน่วย: ล้านบาท)</div>
+
+    <div id="loadingState">🔄 กำลังดึงข้อมูลจากระบบ...</div>
+
+    <div class="table-container" id="tableWrapper" style="display: none;">
+      <table class="step-table">
+        <thead>
+          <tr>
+            <th rowspan="2" class="sticky-col-1" style="min-width: 140px;">หน่วยงาน</th>
+            <th rowspan="2" class="sticky-col-2" style="min-width: 150px;">แหล่งงบประมาณ</th>
+            <th colspan="2" class="header-total">รวมรายการทั้งหมด</th>
+            <th colspan="2">1. ยังไม่ดำเนินการ</th>
+            <th colspan="2">2. อนุมัติแผน</th>
+            <th colspan="2">3. ประกาศ TOR</th>
+            <th colspan="2">4. ประกาศจัดซื้อจัดจ้าง</th>
+            <th colspan="2">5. เปิดซอง</th>
+            <th colspan="2">6. อนุมัติรับราคา</th>
+            <th colspan="2" class="header-success">7. ทำข้อผูกพัน (สัญญา)</th>
+          </tr>
+          <tr>
+            <th class="header-total">จำนวน</th><th class="header-total">วงเงิน</th>
+            <th>จำนวน</th><th>วงเงิน</th>
+            <th>จำนวน</th><th>วงเงิน</th>
+            <th>จำนวน</th><th>วงเงิน</th>
+            <th>จำนวน</th><th>วงเงิน</th>
+            <th>จำนวน</th><th>วงเงิน</th>
+            <th>จำนวน</th><th>วงเงิน</th>
+            <th class="header-success">จำนวน</th><th class="header-success">วงเงิน</th>
+          </tr>
+        </thead>
+
+        <tbody id="stepTableBody">
+          </tbody>
+
+        <tfoot id="stepTableFooter">
+          </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // 🔗 วาง URL ของ Google Apps Script Web App ของคุณที่นี่
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx.../exec'; 
+
+    // ฟังก์ชันเริ่มทำงานเมื่อโหลดหน้าเว็บ
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchDashboardData();
+    });
+
+    // 1. ดึงข้อมูล JSON จาก Apps Script
+    async function fetchDashboardData() {
+      try {
+        const response = await fetch(WEB_APP_URL);
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        // ซ่อนข้อความโหลด แล้วแสดงตาราง
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('tableWrapper').style.display = 'block';
+
+        // ส่งข้อมูลโครงสร้าง STEP_SUMMARY ไปวาดตาราง
+        renderStepSummaryTable(data.STEP_SUMMARY);
+
+      } catch (err) {
+        console.error('Fetch Error:', err);
+        document.getElementById('loadingState').innerHTML = `❌ เกิดข้อผิดพลาดในการโหลดข้อมูล: ${err.message}`;
+      }
+    }
+
+    // 2. ฟังก์ชันวาดตารางและคำนวณยอดรวม (Grand Total)
+    function renderStepSummaryTable(stepData) {
+      const tbody = document.getElementById('stepTableBody');
+      const tfoot = document.getElementById('stepTableFooter');
+      tbody.innerHTML = '';
+      tfoot.innerHTML = '';
+
+      if (!stepData || Object.keys(stepData).length === 0) {
+        tbody.innerHTML = '<tr><td colspan="18">ไม่พบข้อมูลขั้นตอนการดำเนินงาน</td></tr>';
+        return;
+      }
+
+      // ตัวแปรสำหรับคำนวณยอดรวมสรุปท้ายตาราง (Grand Totals)
+      const grandTotal = {
+        total: { cnt: 0, amt: 0 },
+        step1: { cnt: 0, amt: 0 },
+        step2: { cnt: 0, amt: 0 },
+        step3: { cnt: 0, amt: 0 },
+        step4: { cnt: 0, amt: 0 },
+        step5: { cnt: 0, amt: 0 },
+        step6: { cnt: 0, amt: 0 },
+        step7: { cnt: 0, amt: 0 }
+      };
+
+      // ฟังก์ชันช่วยจัดฟอร์แมตตัวเลข
+      const fmtNum = (num) => num ? num.toLocaleString() : '-';
+      const fmtAmt = (amt) => amt > 0 ? amt.toFixed(3) : '-';
+
+      // วนลูปอ่านข้อมูลแยกตาม หน่วยงาน ➔ แหล่งงบประมาณ
+      Object.keys(stepData).forEach(agency => {
+        Object.keys(stepData[agency]).forEach(src => {
+          const item = stepData[agency][src];
+
+          // สะสมยอดรวมท้ายตาราง
+          ['total', 'step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7'].forEach(key => {
+            grandTotal[key].cnt += (item[key]?.cnt || 0);
+            grandTotal[key].amt += (item[key]?.amt || 0);
+          });
+
+          // สร้างแถวข้อมูลตาราง (Row)
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="sticky-col-1">${agency}</td>
+            <td class="sticky-col-2">${src}</td>
+            
+            <td class="bg-total">${fmtNum(item.total.cnt)}</td>
+            <td class="bg-total">${fmtAmt(item.total.amt)}</td>
+            
+            <td>${fmtNum(item.step1.cnt)}</td>
+            <td>${fmtAmt(item.step1.amt)}</td>
+            
+            <td>${fmtNum(item.step2.cnt)}</td>
+            <td>${fmtAmt(item.step2.amt)}</td>
+            
+            <td>${fmtNum(item.step3.cnt)}</td>
+            <td>${fmtAmt(item.step3.amt)}</td>
+            
+            <td>${fmtNum(item.step4.cnt)}</td>
+            <td>${fmtAmt(item.step4.amt)}</td>
+            
+            <td>${fmtNum(item.step5.cnt)}</td>
+            <td>${fmtAmt(item.step5.amt)}</td>
+            
+            <td>${fmtNum(item.step6.cnt)}</td>
+            <td>${fmtAmt(item.step6.amt)}</td>
+            
+            <td style="font-weight:bold; color:#16a34a;">${fmtNum(item.step7.cnt)}</td>
+            <td style="font-weight:bold; color:#16a34a;">${fmtAmt(item.step7.amt)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+
+      // 3. วาดแถวสรุปรวมท้ายตาราง (Footer Row)
+      const footerTr = document.createElement('tr');
+      footerTr.innerHTML = `
+        <td colspan="2" class="sticky-col-1" style="text-align:center !important;">รวมทั้งสิ้น</td>
+        <td>${fmtNum(grandTotal.total.cnt)}</td>
+        <td>${fmtAmt(grandTotal.total.amt)}</td>
+        <td>${fmtNum(grandTotal.step1.cnt)}</td>
+        <td>${fmtAmt(grandTotal.step1.amt)}</td>
+        <td>${fmtNum(grandTotal.step2.cnt)}</td>
+        <td>${fmtAmt(grandTotal.step2.amt)}</td>
+        <td>${fmtNum(grandTotal.step3.cnt)}</td>
+        <td>${fmtAmt(grandTotal.step3.amt)}</td>
+        <td>${fmtNum(grandTotal.step4.cnt)}</td>
+        <td>${fmtAmt(grandTotal.step4.amt)}</td>
+        <td>${fmtNum(grandTotal.step5.cnt)}</td>
+        <td>${fmtAmt(grandTotal.step5.amt)}</td>
+        <td>${fmtNum(grandTotal.step6.cnt)}</td>
+        <td>${fmtAmt(grandTotal.step6.amt)}</td>
+        <td>${fmtNum(grandTotal.step7.cnt)}</td>
+        <td>${fmtAmt(grandTotal.step7.amt)}</td>
+      `;
+      tfoot.appendChild(footerTr);
+    }
+  </script>
+</body>
+</html>
