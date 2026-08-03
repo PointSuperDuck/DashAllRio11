@@ -3,324 +3,189 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>สรุปขั้นตอนการจัดซื้อจัดจ้าง - ชป.11</title>
-  
+  <title>สรุปขั้นตอนการจัดซื้อจัดจ้าง (AE/AS)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ========================================================
-       🎨 1. สไตล์พื้นฐานและการจัดวาง (Layout Styles)
-       ======================================================== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-
-    body {
-      background-color: #f8fafc;
-      color: #1e293b;
-      padding: 16px;
-    }
-
-    .container {
-      max-width: 100%;
-      margin: 0 auto;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .page-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 6px;
-    }
-
-    .page-subtitle {
-      font-size: 0.9rem;
-      color: #64748b;
-      margin-bottom: 16px;
-    }
-
-    /* สถานะกำลังโหลดข้อมูล */
-    #loadingState {
-      text-align: center;
-      padding: 40px;
-      font-size: 1.1rem;
-      color: #2563eb;
-      font-weight: 600;
-    }
-
-    /* ========================================================
-       📊 2. สไตล์ตาราง (Table Styles)
-       ======================================================== */
-    .table-container {
-      width: 100%;
-      overflow-x: auto; /* เปิดระบบเลื่อนแนวนอนบนมือถือ */
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-    }
-
-    table.step-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      font-size: 13px;
-      white-space: nowrap; /* ป้องกันข้อความในเซลล์ตัดบรรทัด */
-    }
-
-    table.step-table th, 
-    table.step-table td {
-      padding: 8px 12px;
-      border-right: 1px solid #e2e8f0;
-      border-bottom: 1px solid #e2e8f0;
-      text-align: center;
-    }
-
-    /* 📌 ตกแต่งหัวตาราง (TableHeader) */
-    table.step-table thead th {
-      background-color: #1e293b;
-      color: #ffffff;
-      font-weight: 600;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    table.step-table thead tr:nth-child(2) th {
-      background-color: #334155;
-      font-size: 12px;
-    }
-
-    /* เน้นสีหัวตารางคอลัมน์สำคัญ */
-    .header-total { background-color: #0284c7 !important; }
-    .header-success { background-color: #16a34a !important; }
-
-    /* 📌 คอลัมน์ตรึงแน่นด้านซ้าย (Sticky Column - มือถือเลื่อนแล้วไม่หลง) */
-    .sticky-col-1 {
-      position: sticky;
-      left: 0;
-      z-index: 5;
-      background-color: #ffffff;
-      font-weight: 600;
-      text-align: left !important;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    }
-
-    .sticky-col-2 {
-      position: sticky;
-      left: 140px; /* ความกว้างของคอลัมน์แรก */
-      z-index: 5;
-      background-color: #ffffff;
-      text-align: left !important;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    }
-
-    thead th.sticky-col-1, 
-    thead th.sticky-col-2 {
-      background-color: #1e293b !important;
-      color: #ffffff !important;
-      z-index: 15 !important;
-    }
-
-    /* 📌 สไตล์ไฮไลต์เนื้อหาในตาราง */
-    .bg-total { background-color: #f0f9ff; font-weight: bold; }
-    .bg-success { background-color: #dc2626; color: white; } /* ทำสัญญาแล้ว */
-    .text-muted { color: #cbd5e1; }
+    * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; }
+    body { background-color: #f8fafc; margin: 0; padding: 16px; color: #1e293b; padding-bottom: 60px; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    .header-card { background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    h1 { margin: 0 0 8px 0; font-size: 20px; color: #0f172a; font-weight: 700; }
+    .subtitle { color: #64748b; font-size: 14px; margin: 0; }
+    .note-box { background: #eff6ff; border-left: 4px solid #2563eb; padding: 10px 14px; margin-top: 12px; border-radius: 0 6px 6px 0; font-size: 13px; color: #1e40af; line-height: 1.6; }
     
-    /* สไตล์แถวรวมทั้งหมด (Grand Total Footer) */
-    table.step-table tfoot tr td {
-      background-color: #0f172a;
-      color: #ffffff;
+    .budget-section { background: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .budget-title { font-size: 16px; font-weight: 700; color: #1e3a8a; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+    
+    .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; }
+    th, td { border: 1px solid #cbd5e1; padding: 8px 6px; white-space: nowrap; }
+    th { background-color: #f1f5f9; color: #334155; font-weight: 600; }
+    tr:nth-child(even) { background-color: #f8fafc; }
+    tr:hover { background-color: #f1f5f9; }
+    
+    .text-left { text-align: left; font-weight: 600; padding-left: 10px; }
+    .step-header { font-size: 12px; }
+    .step-done { background-color: #f0fdf4; color: #166534; }
+    
+    /* 🔴 เน้นสีโทนแดงสำหรับขั้นตอน 1-6 ที่มีข้อมูลค้างอยู่ */
+    .pending-highlight {
+      background-color: #ffebee !important;
+      color: #c62828 !important;
       font-weight: 700;
-      border-top: 2px solid #0284c7;
+      border: 1px solid #ffcdd2 !important;
     }
 
-    /* ========================================================
-       📱 3. Responsive สำหรับหน้าจอมือถือ
-       ======================================================== */
-    @media (max-width: 768px) {
-      body { padding: 8px; }
-      .container { padding: 12px; }
-      .page-title { font-size: 1.1rem; }
-      table.step-table th, table.step-table td { padding: 6px 8px; font-size: 12px; }
-    }
+    .total-row { background-color: #e2e8f0 !important; font-weight: 700; color: #0f172a; }
+    .loading-box { text-align: center; padding: 40px; font-size: 16px; color: #64748b; }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <div class="page-title">📋 สรุปขั้นตอนการจัดซื้อจัดจ้าง (AE / AS) แยกตามหน่วยงาน</div>
-    <div class="page-subtitle">ข้อมูลจำแนกตามขั้นตอนการดำเนินงาน และวงเงินงบประมาณปีปัจจุบัน (หน่วย: ล้านบาท)</div>
+    <div class="header-card">
+      <h1>📋 สรุปขั้นตอนการจัดซื้อจัดจ้าง (AE / AS) แยกตามแหล่งงบประมาณ</h1>
+      <p class="subtitle">จำแนกความก้าวหน้าตามขั้นตอนการดำเนินงาน และวงเงินงบประมาณปีปัจจุบัน (หน่วย: จำนวนโครงการ / ล้านบาท)</p>
+      <div class="note-box">
+        💡 <strong>เกณฑ์การนับขั้นตอน:</strong> ระบบเปรียบเทียบช่อง AE และ AS แล้วเลือกลำดับขั้นตอนที่สูงที่สุด (1-7) เพียงค่าเดียวเพื่อไม่ให้เกิดการนับซ้ำ<br>
+        🔴 <strong>เน้นแถบสีแดง:</strong> แสดงรายการในขั้นตอนที่ 1 - 6 ที่ยังมีโครงการอยู่ระหว่างดำเนินการ (ยังไม่ถึงขั้นทำสัญญาผูกพัน)
+      </div>
+    </div>
 
-    <div id="loadingState">🔄 กำลังดึงข้อมูลจากระบบ...</div>
-
-    <div class="table-container" id="tableWrapper" style="display: none;">
-      <table class="step-table">
-        <thead>
-          <tr>
-            <th rowspan="2" class="sticky-col-1" style="min-width: 140px;">หน่วยงาน</th>
-            <th rowspan="2" class="sticky-col-2" style="min-width: 150px;">แหล่งงบประมาณ</th>
-            <th colspan="2" class="header-total">รวมรายการทั้งหมด</th>
-            <th colspan="2">1. ยังไม่ดำเนินการ</th>
-            <th colspan="2">2. อนุมัติแผน</th>
-            <th colspan="2">3. ประกาศ TOR</th>
-            <th colspan="2">4. ประกาศจัดซื้อจัดจ้าง</th>
-            <th colspan="2">5. เปิดซอง</th>
-            <th colspan="2">6. อนุมัติรับราคา</th>
-            <th colspan="2" class="header-success">7. ทำข้อผูกพัน (สัญญา)</th>
-          </tr>
-          <tr>
-            <th class="header-total">จำนวน</th><th class="header-total">วงเงิน</th>
-            <th>จำนวน</th><th>วงเงิน</th>
-            <th>จำนวน</th><th>วงเงิน</th>
-            <th>จำนวน</th><th>วงเงิน</th>
-            <th>จำนวน</th><th>วงเงิน</th>
-            <th>จำนวน</th><th>วงเงิน</th>
-            <th>จำนวน</th><th>วงเงิน</th>
-            <th class="header-success">จำนวน</th><th class="header-success">วงเงิน</th>
-          </tr>
-        </thead>
-
-        <tbody id="stepTableBody">
-          </tbody>
-
-        <tfoot id="stepTableFooter">
-          </tfoot>
-      </table>
+    <div id="contentArea">
+      <div class="loading-box">🔄 กำลังดึงข้อมูลจากระบบ...</div>
     </div>
   </div>
 
   <script>
-    // 🔗 วาง URL ของ Google Apps Script Web App ของคุณที่นี่
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwvyaWmCjmpSdzUx6xFVeaRb0Bnlr5iOzud-cn-ucFUYEx6xR4Z8vitDTFIZ38APg5/exec'; 
+    // 📍 อย่าลืมตรวจสอบ URL ของ Apps Script ให้ถูกต้องนะครับ
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyB7pMOt--afm3gAIHd1fMGMLC43JY871gRKdMtoWWF0QqnVsxjJOt3hClr5tCw7KKL/exec';
 
-    // ฟังก์ชันเริ่มทำงานเมื่อโหลดหน้าเว็บ
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchDashboardData();
-    });
+    const SRC_ORDER = ['งบ พ.ร.บ.69', 'งบกลาง กัน 68', 'งบ พ.ร.บ. กัน 68', 'งบ พ.ร.บ.69 (เพิ่มเติม)', 'เงินทุนหมุนเวียน'];
+    const STEP_NAMES = [
+      '1. ยังไม่ดำเนินการ',
+      '2. อนุมัติแผน',
+      '3. ประกาศ TOR',
+      '4. ประกวดราคา',
+      '5. เปิดซอง',
+      '6. อนุมัติรับราคา',
+      '7. ทำสัญญา (ผูกพัน)'
+    ];
 
-    // 1. ดึงข้อมูล JSON จาก Apps Script
-    async function fetchDashboardData() {
+    async function loadData() {
       try {
         const response = await fetch(WEB_APP_URL);
         const data = await response.json();
-
+        
         if (data.error) {
-          throw new Error(data.error);
+          document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ เกิดข้อผิดพลาด: ${data.error}</div>`;
+          return;
         }
 
-        // ซ่อนข้อความโหลด แล้วแสดงตาราง
-        document.getElementById('loadingState').style.display = 'none';
-        document.getElementById('tableWrapper').style.display = 'block';
-
-        // ส่งข้อมูลโครงสร้าง STEP_SUMMARY ไปวาดตาราง
-        renderStepSummaryTable(data.STEP_SUMMARY);
-
+        renderTables(data.STEP_SUMMARY || {});
       } catch (err) {
-        console.error('Fetch Error:', err);
-        document.getElementById('loadingState').innerHTML = `❌ เกิดข้อผิดพลาดในการโหลดข้อมูล: ${err.message}`;
+        document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ ไม่สามารถเชื่อมต่อระบบได้: ${err.message}</div>`;
       }
     }
 
-    // 2. ฟังก์ชันวาดตารางและคำนวณยอดรวม (Grand Total)
-    function renderStepSummaryTable(stepData) {
-      const tbody = document.getElementById('stepTableBody');
-      const tfoot = document.getElementById('stepTableFooter');
-      tbody.innerHTML = '';
-      tfoot.innerHTML = '';
+    function renderTables(stepSummary) {
+      const container = document.getElementById('contentArea');
+      container.innerHTML = '';
 
-      if (!stepData || Object.keys(stepData).length === 0) {
-        tbody.innerHTML = '<tr><td colspan="18">ไม่พบข้อมูลขั้นตอนการดำเนินงาน</td></tr>';
-        return;
-      }
+      let hasData = false;
 
-      // ตัวแปรสำหรับคำนวณยอดรวมสรุปท้ายตาราง (Grand Totals)
-      const grandTotal = {
-        total: { cnt: 0, amt: 0 },
-        step1: { cnt: 0, amt: 0 },
-        step2: { cnt: 0, amt: 0 },
-        step3: { cnt: 0, amt: 0 },
-        step4: { cnt: 0, amt: 0 },
-        step5: { cnt: 0, amt: 0 },
-        step6: { cnt: 0, amt: 0 },
-        step7: { cnt: 0, amt: 0 }
-      };
+      SRC_ORDER.forEach(src => {
+        // คัดกรองเฉพาะหน่วยงานที่มีข้อมูลในแหล่งงบนี้
+        const agencies = Object.keys(stepSummary).filter(ag => stepSummary[ag][src] && stepSummary[ag][src].total.cnt > 0);
 
-      // ฟังก์ชันช่วยจัดฟอร์แมตตัวเลข
-      const fmtNum = (num) => num ? num.toLocaleString() : '-';
-      const fmtAmt = (amt) => amt > 0 ? amt.toFixed(3) : '-';
+        if (agencies.length === 0) return;
+        hasData = true;
 
-      // วนลูปอ่านข้อมูลแยกตาม หน่วยงาน ➔ แหล่งงบประมาณ
-      Object.keys(stepData).forEach(agency => {
-        Object.keys(stepData[agency]).forEach(src => {
-          const item = stepData[agency][src];
+        let sumTotal = { cnt: 0, amt: 0 };
+        let sumSteps = Array(7).fill(null).map(() => ({ cnt: 0, amt: 0 }));
 
-          // สะสมยอดรวมท้ายตาราง
-          ['total', 'step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7'].forEach(key => {
-            grandTotal[key].cnt += (item[key]?.cnt || 0);
-            grandTotal[key].amt += (item[key]?.amt || 0);
-          });
+        let rowsHtml = '';
+        agencies.forEach(ag => {
+          const item = stepSummary[ag][src];
+          sumTotal.cnt += item.total.cnt;
+          sumTotal.amt += item.total.amt;
 
-          // สร้างแถวข้อมูลตาราง (Row)
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td class="sticky-col-1">${agency}</td>
-            <td class="sticky-col-2">${src}</td>
-            
-            <td class="bg-total">${fmtNum(item.total.cnt)}</td>
-            <td class="bg-total">${fmtAmt(item.total.amt)}</td>
-            
-            <td>${fmtNum(item.step1.cnt)}</td>
-            <td>${fmtAmt(item.step1.amt)}</td>
-            
-            <td>${fmtNum(item.step2.cnt)}</td>
-            <td>${fmtAmt(item.step2.amt)}</td>
-            
-            <td>${fmtNum(item.step3.cnt)}</td>
-            <td>${fmtAmt(item.step3.amt)}</td>
-            
-            <td>${fmtNum(item.step4.cnt)}</td>
-            <td>${fmtAmt(item.step4.amt)}</td>
-            
-            <td>${fmtNum(item.step5.cnt)}</td>
-            <td>${fmtAmt(item.step5.amt)}</td>
-            
-            <td>${fmtNum(item.step6.cnt)}</td>
-            <td>${fmtAmt(item.step6.amt)}</td>
-            
-            <td style="font-weight:bold; color:#16a34a;">${fmtNum(item.step7.cnt)}</td>
-            <td style="font-weight:bold; color:#16a34a;">${fmtAmt(item.step7.amt)}</td>
-          `;
-          tbody.appendChild(tr);
+          let stepsTd = '';
+          for (let i = 1; i <= 7; i++) {
+            const st = item[`step${i}`];
+            sumSteps[i-1].cnt += st.cnt;
+            sumSteps[i-1].amt += st.amt;
+
+            // 🔴 ใส่ไฮไลท์สีแดงกรณีเป็นขั้นตอนที่ 1-6 และมีโครงการค้างอยู่ (cnt > 0)
+            const isPendingAndHasData = (i <= 6 && st.cnt > 0);
+            const cellClass = isPendingAndHasData ? 'pending-highlight' : (i === 7 ? 'step-done' : '');
+
+            stepsTd += `<td class="${cellClass}">
+              ${st.cnt > 0 ? `<strong>${st.cnt}</strong><br><small>(${st.amt.toFixed(2)})</small>` : '-'}
+            </td>`;
+          }
+
+          rowsHtml += `<tr>
+            <td class="text-left">${ag}</td>
+            <td><strong>${item.total.cnt}</strong><br><small>(${item.total.amt.toFixed(2)})</small></td>
+            ${stepsTd}
+          </tr>`;
         });
+
+        // แถวสรุปรวมท้ายตาราง
+        let totalStepsTd = '';
+        for (let i = 0; i < 7; i++) {
+          const st = sumSteps[i];
+          const isPendingAndHasData = (i < 6 && st.cnt > 0);
+          const cellClass = isPendingAndHasData ? 'pending-highlight' : '';
+
+          totalStepsTd += `<td class="${cellClass}">
+            <strong>${st.cnt}</strong><br><small>(${st.amt.toFixed(2)})</small>
+          </td>`;
+        }
+
+        const tableHtml = `
+          <div class="budget-section">
+            <div class="budget-title">🏷️ แหล่งงบประมาณ: ${src}</div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th rowspan="2" style="width: 18%;">หน่วยงาน</th>
+                    <th rowspan="2" style="width: 10%;">รวมทั้งหมด<br><small>(โครงการ / ล้านบาท)</small></th>
+                    <th colspan="7">ขั้นตอนการดำเนินงาน (โครงการ / วงเงิน)</th>
+                  </tr>
+                  <tr>
+                    <th class="step-header">${STEP_NAMES[0]}</th>
+                    <th class="step-header">${STEP_NAMES[1]}</th>
+                    <th class="step-header">${STEP_NAMES[2]}</th>
+                    <th class="step-header">${STEP_NAMES[3]}</th>
+                    <th class="step-header">${STEP_NAMES[4]}</th>
+                    <th class="step-header">${STEP_NAMES[5]}</th>
+                    <th class="step-header" style="background-color: #dcfce7; color: #15803d;">${STEP_NAMES[6]}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rowsHtml}
+                  <tr class="total-row">
+                    <td class="text-left">รวมทั้งสิ้น</td>
+                    <td><strong>${sumTotal.cnt}</strong><br><small>(${sumTotal.amt.toFixed(2)})</small></td>
+                    ${totalStepsTd}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        container.innerHTML += tableHtml;
       });
 
-      // 3. วาดแถวสรุปรวมท้ายตาราง (Footer Row)
-      const footerTr = document.createElement('tr');
-      footerTr.innerHTML = `
-        <td colspan="2" class="sticky-col-1" style="text-align:center !important;">รวมทั้งสิ้น</td>
-        <td>${fmtNum(grandTotal.total.cnt)}</td>
-        <td>${fmtAmt(grandTotal.total.amt)}</td>
-        <td>${fmtNum(grandTotal.step1.cnt)}</td>
-        <td>${fmtAmt(grandTotal.step1.amt)}</td>
-        <td>${fmtNum(grandTotal.step2.cnt)}</td>
-        <td>${fmtAmt(grandTotal.step2.amt)}</td>
-        <td>${fmtNum(grandTotal.step3.cnt)}</td>
-        <td>${fmtAmt(grandTotal.step3.amt)}</td>
-        <td>${fmtNum(grandTotal.step4.cnt)}</td>
-        <td>${fmtAmt(grandTotal.step4.amt)}</td>
-        <td>${fmtNum(grandTotal.step5.cnt)}</td>
-        <td>${fmtAmt(grandTotal.step5.amt)}</td>
-        <td>${fmtNum(grandTotal.step6.cnt)}</td>
-        <td>${fmtAmt(grandTotal.step6.amt)}</td>
-        <td>${fmtNum(grandTotal.step7.cnt)}</td>
-        <td>${fmtAmt(grandTotal.step7.amt)}</td>
-      `;
-      tfoot.appendChild(footerTr);
+      if (!hasData) {
+        container.innerHTML = '<div class="loading-box">⚠️ ไม่พบข้อมูลสำหรับสร้างตารางสรุปขั้นตอน</div>';
+      }
     }
+
+    window.onload = loadData;
   </script>
 </body>
 </html>
