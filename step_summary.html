@@ -9,14 +9,71 @@
     * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; }
     body { background-color: #f8fafc; margin: 0; padding: 16px; color: #1e293b; padding-bottom: 60px; }
     .container { max-width: 1400px; margin: 0 auto; }
-    .header-card { background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    
+    /* 📋 การ์ดหัวเรื่อง + ปุ่มกด */
+    .header-card { 
+      background: #ffffff; 
+      padding: 20px; 
+      border-radius: 12px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
+      margin-bottom: 20px; 
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .header-title-group { flex: 1; min-width: 280px; }
     h1 { margin: 0 0 8px 0; font-size: 20px; color: #0f172a; font-weight: 700; }
     .subtitle { color: #64748b; font-size: 14px; margin: 0; }
     .note-box { background: #eff6ff; border-left: 4px solid #2563eb; padding: 10px 14px; margin-top: 12px; border-radius: 0 6px 6px 0; font-size: 13px; color: #1e40af; line-height: 1.6; }
     
+    /* 🔘 ปุ่ม Action Buttons (รีเฟรช / พิมพ์) */
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background-color: #ffffff;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .btn:hover { background-color: #f1f5f9; border-color: #94a3b8; }
+    .btn-refresh { color: #0284c7; border-color: #bae6fd; background-color: #f0f9ff; }
+    .btn-refresh:hover { background-color: #e0f2fe; }
+    .btn-print { color: #15803d; border-color: #bbf7d0; background-color: #f0fdf4; }
+    .btn-print:hover { background-color: #dcfce7; }
+
+    /* 🏷️ กล่องแต่ละแหล่งงบประมาณ */
     .budget-section { background: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .budget-title { font-size: 16px; font-weight: 700; color: #1e3a8a; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+    .budget-title { font-size: 16px; font-weight: 700; color: #1e3a8a; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
     
+    /* 💬 ข้อความสรุปใต้ชื่อแหล่งงบ */
+    .budget-summary-text {
+      background-color: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #334155;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .budget-summary-text strong { color: #0f172a; }
+    .step-badge-text { display: inline-block; margin-right: 6px; }
+
+    /* 📋 ตารางข้อมูล */
     .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; }
     th, td { border: 1px solid #cbd5e1; padding: 8px 6px; white-space: nowrap; }
@@ -38,15 +95,31 @@
 
     .total-row { background-color: #e2e8f0 !important; font-weight: 700; color: #0f172a; }
     .loading-box { text-align: center; padding: 40px; font-size: 16px; color: #64748b; }
+
+    /* 🖨️ สไตล์สำหรับการพิมพ์ (Print Style) */
+    @media print {
+      body { background-color: #ffffff; padding: 0; }
+      .action-buttons, .note-box { display: none !important; }
+      .header-card { box-shadow: none; border: 1px solid #e2e8f0; padding: 12px; }
+      .budget-section { box-shadow: none; border: 1px solid #cbd5e1; page-break-inside: avoid; }
+      .container { max-width: 100%; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header-card">
-      <h1>📋 สรุปขั้นตอนการจัดซื้อจัดจ้าง สชป.11 แยกตามแหล่งงบประมาณ</h1>
-      <p class="subtitle">จำแนกความก้าวหน้าตามขั้นตอนการดำเนินงาน และวงเงินงบประมาณปีปัจจุบัน (หน่วย: จำนวนโครงการ / ล้านบาท)</p>
-      <div class="note-box">
-        💡 <strong>จัดทำโดย:</strong> ฝ่ายติดตามและประเมินผล ส่วนแผนงาน สำนักงานชลประทานที่ 11<br>
+      <div class="header-title-group">
+        <h1>📋 สรุปขั้นตอนการจัดซื้อจัดจ้าง สชป.11 แยกตามแหล่งงบประมาณ</h1>
+        <p class="subtitle">จำแนกความก้าวหน้าตามขั้นตอนการดำเนินงาน และวงเงินงบประมาณปีปัจจุบัน (หน่วย: จำนวนโครงการ / ล้านบาท)</p>
+        <div class="note-box">
+          💡 <strong>จัดทำโดย:</strong> ฝ่ายติดตามและประเมินผล ส่วนแผนงาน สำนักงานชลประทานที่ 11<br>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-refresh" onclick="refreshData()">🔄 รีเฟรชข้อมูล</button>
+        <button class="btn btn-print" onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button>
       </div>
     </div>
 
@@ -56,7 +129,6 @@
   </div>
 
   <script>
-    // 📍 อย่าลืมตรวจสอบ URL ของ Apps Script ให้ถูกต้องนะครับ
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyB7pMOt--afm3gAIHd1fMGMLC43JY871gRKdMtoWWF0QqnVsxjJOt3hClr5tCw7KKL/exec';
 
     const SRC_ORDER = ['งบ พ.ร.บ.69', 'งบกลาง กัน 68', 'งบ พ.ร.บ. กัน 68', 'งบ พ.ร.บ.69 (เพิ่มเติม)', 'เงินทุนหมุนเวียน'];
@@ -70,34 +142,40 @@
       '7. ทำสัญญา (ผูกพัน)'
     ];
 
-    // ✅ นำบล็อกนี้ไปวางแทนที่ได้เลยครับ (เพิ่มฟังก์ชันลองใหม่อัตโนมัติ 3 รอบ)
-async function fetchWithRetry(url, retries = 3, delay = 1500) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) return await response.json();
-    } catch (err) {
-      if (i === retries - 1) throw err;
-      await new Promise(resolve => setTimeout(resolve, delay)); // หากดึงไม่ผ่าน รอ 1.5 วินาทีแล้วลองใหม่
-    }
-  }
-}
-
-async function loadData() {
-  try {
-    // เรียกใช้ฟังก์ชันดึงข้อมูลผ่าน Auto-Retry
-    const data = await fetchWithRetry(WEB_APP_URL);
-    
-    if (data.error) {
-      document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ เกิดข้อผิดพลาด: ${data.error}</div>`;
-      return;
+    // ฟังก์ชัน Auto-Retry 3 รอบ
+    async function fetchWithRetry(url, retries = 3, delay = 1500) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url);
+          if (response.ok) return await response.json();
+        } catch (err) {
+          if (i === retries - 1) throw err;
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
     }
 
-    renderTables(data.STEP_SUMMARY || {});
-  } catch (err) {
-    document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ ไม่สามารถเชื่อมต่อระบบได้ ชั่วคราว กรุณาลองใหม่อีกครั้ง</div>`;
-  }
-}
+    async function loadData() {
+      try {
+        const data = await fetchWithRetry(WEB_APP_URL);
+        
+        if (data.error) {
+          document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ เกิดข้อผิดพลาด: ${data.error}</div>`;
+          return;
+        }
+
+        renderTables(data.STEP_SUMMARY || {});
+      } catch (err) {
+        document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ ไม่สามารถเชื่อมต่อระบบได้ ชั่วคราว กรุณาลองใหม่อีกครั้ง</div>`;
+      }
+    }
+
+    // ฟังก์ชันสำหรับกดปุ่มรีเฟรชข้อมูล
+    async function refreshData() {
+      const container = document.getElementById('contentArea');
+      container.innerHTML = '<div class="loading-box">🔄 กำลังอัปเดตข้อมูลล่าสุด...</div>';
+      await loadData();
+    }
 
     function renderTables(stepSummary) {
       const container = document.getElementById('contentArea');
@@ -106,7 +184,6 @@ async function loadData() {
       let hasData = false;
 
       SRC_ORDER.forEach(src => {
-        // คัดกรองเฉพาะหน่วยงานที่มีข้อมูลในแหล่งงบนี้
         const agencies = Object.keys(stepSummary).filter(ag => stepSummary[ag][src] && stepSummary[ag][src].total.cnt > 0);
 
         if (agencies.length === 0) return;
@@ -127,7 +204,6 @@ async function loadData() {
             sumSteps[i-1].cnt += st.cnt;
             sumSteps[i-1].amt += st.amt;
 
-            // 🔴 ใส่ไฮไลท์สีแดงกรณีเป็นขั้นตอนที่ 1-6 และมีโครงการค้างอยู่ (cnt > 0)
             const isPendingAndHasData = (i <= 6 && st.cnt > 0);
             const cellClass = isPendingAndHasData ? 'pending-highlight' : (i === 7 ? 'step-done' : '');
 
@@ -142,6 +218,24 @@ async function loadData() {
             ${stepsTd}
           </tr>`;
         });
+
+        // คำนวณสรุปข้อความประจำแหล่งงบประมาณ
+        let summaryTextParts = [];
+        STEP_NAMES.forEach((name, idx) => {
+          const count = sumSteps[idx].cnt;
+          if (count > 0) {
+            // ใส่สีเน้นเฉพาะขั้นตอนที่ค้างอยู่ (1-6) และขั้นตอนทำสัญญา (7)
+            const style = (idx < 6) ? 'color: #c62828; font-weight: bold;' : 'color: #15803d; font-weight: bold;';
+            summaryTextParts.push(`<span class="step-badge-text"><b>${name}:</b> <span style="${style}">${count}</span> รายการ</span>`);
+          }
+        });
+
+        const summaryTextHtml = `
+          <div class="budget-summary-text">
+            📌 <strong>สรุปจำนวนโครงการ:</strong> รวม <strong>${sumTotal.cnt}</strong> รายการ (${sumTotal.amt.toFixed(2)} ล้านบาท) 
+            ${summaryTextParts.length > 0 ? ' ➔ ' + summaryTextParts.join(' | ') : ''}
+          </div>
+        `;
 
         // แถวสรุปรวมท้ายตาราง
         let totalStepsTd = '';
@@ -158,6 +252,7 @@ async function loadData() {
         const tableHtml = `
           <div class="budget-section">
             <div class="budget-title">🏷️ แหล่งงบประมาณ: ${src}</div>
+            ${summaryTextHtml}
             <div class="table-container">
               <table>
                 <thead>
