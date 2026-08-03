@@ -70,21 +70,34 @@
       '7. ทำสัญญา (ผูกพัน)'
     ];
 
-    async function loadData() {
-      try {
-        const response = await fetch(WEB_APP_URL);
-        const data = await response.json();
-        
-        if (data.error) {
-          document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ เกิดข้อผิดพลาด: ${data.error}</div>`;
-          return;
-        }
-
-        renderTables(data.STEP_SUMMARY || {});
-      } catch (err) {
-        document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ ไม่สามารถเชื่อมต่อระบบได้: ${err.message}</div>`;
-      }
+    // ✅ นำบล็อกนี้ไปวางแทนที่ได้เลยครับ (เพิ่มฟังก์ชันลองใหม่อัตโนมัติ 3 รอบ)
+async function fetchWithRetry(url, retries = 3, delay = 1500) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) return await response.json();
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      await new Promise(resolve => setTimeout(resolve, delay)); // หากดึงไม่ผ่าน รอ 1.5 วินาทีแล้วลองใหม่
     }
+  }
+}
+
+async function loadData() {
+  try {
+    // เรียกใช้ฟังก์ชันดึงข้อมูลผ่าน Auto-Retry
+    const data = await fetchWithRetry(WEB_APP_URL);
+    
+    if (data.error) {
+      document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ เกิดข้อผิดพลาด: ${data.error}</div>`;
+      return;
+    }
+
+    renderTables(data.STEP_SUMMARY || {});
+  } catch (err) {
+    document.getElementById('contentArea').innerHTML = `<div class="loading-box" style="color: red;">❌ ไม่สามารถเชื่อมต่อระบบได้ ชั่วคราว กรุณาลองใหม่อีกครั้ง</div>`;
+  }
+}
 
     function renderTables(stepSummary) {
       const container = document.getElementById('contentArea');
