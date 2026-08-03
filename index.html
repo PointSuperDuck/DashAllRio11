@@ -15,6 +15,7 @@
       background-color: #f0f4f8;
       color: #333;
       padding: 20px;
+      padding-bottom: 60px !important;
     }
     .main-header {
       background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
@@ -69,8 +70,56 @@
       height: 8px;
       border-radius: 4px;
     }
+
+    /* =========================================================
+       ✨ เพิ่มสไตล์กล่องหมุนโหลด (Loading Overlay & Spinner)
+       ========================================================= */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(240, 244, 248, 0.95);
+      backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #e2e8f0;
+      border-top: 5px solid #0d47a1;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 10px rgba(13, 71, 161, 0.15);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0d47a1;
+      letter-spacing: 0.5px;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
     /* ========================================================
-       👇 วางโค้ด CSS สำหรับมือถือ ต่อท้ายตรงนี้ได้เลยครับ 👇
+       📱 ปรับแต่งการแสดงผลบนมือถือ (Mobile Responsive)
        ======================================================== */
     @media (max-width: 768px) {
       body {
@@ -87,6 +136,9 @@
       .card {
         width: 100% !important;
         padding: 12px !important;
+        margin-bottom: 10px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
       }
 
       .table-responsive {
@@ -100,58 +152,42 @@
         padding: 8px 10px !important;
         font-size: 13px;
       }
+
+      h1, .header-title, .title {
+        font-size: 1.25rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 8px !important;
+        text-align: center;
+      }
+
+      h2, .sub-title {
+        font-size: 1.1rem !important;
+        margin-bottom: 6px !important;
+      }
+
+      h3 {
+        font-size: 1.0rem !important;
+      }
+
+      header, .header-container, .top-bar {
+        padding: 10px 12px !important;
+        margin-bottom: 12px !important;
+        border-radius: 8px;
+      }
+
+      .subtitle-text, .update-date, p {
+        font-size: 0.85rem !important;
+        color: #F5F5F5 !important;
+      }
     }
-    /* ======================================================== */
- /* ========================================================
-   📱 ปรับแต่งหัวเรื่องและดีไซน์เฉพาะบนมือถือ (Mobile Design)
-   ======================================================== */
-@media (max-width: 768px) {
-
-  /* 1. ย่อขนาดหัวเรื่องทั้งหมดให้พอดีจอมือถือ */
-  h1, .header-title, .title {
-    font-size: 1.25rem !important;  /* ย่อขนาดจากเดิมเหลือประมาณ 20px */
-    line-height: 1.3 !important;    /* ปรับระยะห่างระหว่างบรรทัดไม่ให้ห่างเกินไป */
-    margin-bottom: 8px !important;
-    text-align: center;            /* จัดให้อยู่กลางหน้าจอมือถือ (ดูเป็นระเบียบขึ้น) */
-  }
-
-  h2, .sub-title {
-    font-size: 1.1rem !important;   /* หัวเรื่องย่อย (~17.5px) */
-    margin-bottom: 6px !important;
-  }
-
-  h3 {
-    font-size: 1.0rem !important;   /* หัวเรื่องระดับ 3 (~16px) */
-  }
-
-  /* 2. ลดระยะห่างแถบบนสุด (Header Banner) ไม่ให้กินพื้นที่หน้าจอเยอะ */
-  header, .header-container, .top-bar {
-    padding: 10px 12px !important;  /* ลด Padding บน-ล่าง */
-    margin-bottom: 12px !important;
-    border-radius: 8px;             /* ปรับมุมให้โค้งมนดูทันสมัย */
-  }
-
-  /* 3. ปรับตัวหนังสือคำอธิบายใต้หัวเรื่อง (Sub-text / Date) */
-  .subtitle-text, .update-date, p {
-    font-size: 0.85rem !important;  /* ตัวหนังสือเล็ก (~13.5px) */
-    color: #F5F5F5 !important;                   /* ใช้สีWhiteSmokeเพื่อไม่ให้แย่งความสนใจจากหัวเรื่อง */
-  }
-
-  /* 4. ตกแต่งการ์ดสรุปข้อมูลให้ดูละมุนและอ่านง่ายขึ้น */
-  .card, .stat-card {
-    padding: 12px 14px !important;
-    margin-bottom: 10px !important;
-    border-radius: 10px !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important; /* เงาบางๆ ให้ดูมีมิติ */
-  }
-}
-/* 👇 วางต่อท้ายล่างสุดก่อนปิด <style> เช่นกันครับ 👇 */
-    body {
-      padding-bottom: 60px !important; /* เพิ่มพื้นที่ว่างด้านล่างสุด */
-  }
   </style>
 </head>
 <body>
+
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">🔄 กำลังโหลดข้อมูล...</div>
+</div>
 
 <div class="container-fluid">
   
@@ -261,7 +297,7 @@ let statusPieInstance = null;
 let statusBarInstance = null;
 
 // ========================================================
-// 🌟 ฟังก์ชันดึงสถานะโครงการ (ใช้ค่าจาก Apps Script ใน Index 7)
+// 🌟 ฟังก์ชันดึงสถานะโครงการ
 // ========================================================
 function evaluateProjectStatus(proj) {
   if (!proj || !Array.isArray(proj)) return 'ระหว่างจัดซื้อ/จัดจ้าง';
@@ -530,18 +566,33 @@ function filterDisbursementData() {
   
   renderGroupedDisbursement(filtered);
   
-  // คำนวณสรุปขั้นตอนตามชุดข้อมูลที่ค้นหา
   const updatedStatusSummary = calculateStatusSummary(filtered);
   renderStatusSection(updatedStatusSummary);
 }
 
-// ดึงข้อมูลจาก API
-function loadData() {
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwvyaWmCjmpSdzUx6xFVeaRb0Bnlr5iOzud-cn-ucFUYEx6xR4Z8vitDTFIZ38APg5/exec'; // ใส่ URL ของ Apps Script ที่นี่
+// 💡 ฟังก์ชัน Auto-Retry ดึงข้อมูลซ้ำอัตโนมัติ 3 รอบ กรณีระบบตอบสนองช้า
+async function fetchWithRetry(url, retries = 3, delay = 1500) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) return await response.json();
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
 
-  fetch(WEB_APP_URL)
-    .then(res => res.json())
-    .then(data => {
+// ดึงข้อมูลจาก API
+async function loadData() {
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwvyaWmCjmpSdzUx6xFVeaRb0Bnlr5iOzud-cn-ucFUYEx6xR4Z8vitDTFIZ38APg5/exec';
+  const loadingOverlay = document.getElementById('loadingOverlay');
+
+  try {
+    // ดึงข้อมูลผ่านระบบ Auto-Retry
+    const data = await fetchWithRetry(WEB_APP_URL);
+
+    if (data) {
       if (data.updated) document.getElementById('updateText').innerText = 'ข้อมูล ณ วันที่: ' + data.updated;
       if (data.total !== undefined) document.getElementById('totalCount').innerText = data.total.toLocaleString();
 
@@ -551,12 +602,23 @@ function loadData() {
         rawAllProjects = data.ALL;
         renderGroupedDisbursement(rawAllProjects);
 
-        // ประมวลผลและสรุปขั้นตอนการดำเนินงานโดยเช็คข้อผูกพันในช่อง AE / AS
         const calculatedSummary = calculateStatusSummary(rawAllProjects);
         renderStatusSection(calculatedSummary);
       }
-    })
-    .catch(err => console.error('Error:', err));
+
+      // ซ่อน Loading Overlay เมื่อประมวลผลเสร็จสิ้น
+      if (loadingOverlay) loadingOverlay.classList.add('hidden');
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    if (loadingOverlay) {
+      loadingOverlay.innerHTML = `
+        <div style="color: #d32f2f; font-weight: bold; font-size: 16px; text-align: center; padding: 20px;">
+          ❌ ไม่สามารถเชื่อมต่อระบบได้ชั่วคราว<br>
+          <small style="color: #666; font-weight: normal; margin-top: 8px; display: block;">กรุณากดรีเฟรชหน้าจอใหม่อีกครั้ง</small>
+        </div>`;
+    }
+  }
 }
 
 window.onload = loadData;
