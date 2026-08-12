@@ -576,10 +576,6 @@ async function fetchWithRetry(url, retries = 3, delay = 1500) {
     try {
       const response = await fetch(url, {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
         redirect: 'follow'
       });
       if (response.ok) return await response.json();
