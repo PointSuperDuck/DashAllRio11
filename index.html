@@ -574,7 +574,14 @@ function filterDisbursementData() {
 async function fetchWithRetry(url, retries = 3, delay = 1500) {
   for (let i = 0; i < retries; i++) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow'
+      });
       if (response.ok) return await response.json();
     } catch (err) {
       if (i === retries - 1) throw err;
@@ -582,7 +589,7 @@ async function fetchWithRetry(url, retries = 3, delay = 1500) {
     }
   }
 }
-
+  
 // ดึงข้อมูลจาก API
 async function loadData() {
   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz83WB83S8CisoC2UV9SmSJs9CzFpfGNEmJNRkCOmfzaGmzdgwSpxa64RjESyPiG0iP/exec';
